@@ -83,15 +83,15 @@
         var inst = table.render({
             elem: '#bill-data',
             cols: [[ //标题栏
-                {field: 'id', title: '序号', width: 80,templet: function(d){
+                {field: 'id', title: '序号', templet: function(d){
                         return d.LAY_INDEX + 1;
                     }},
-                {field: 'name', title: '名称', width: 120, sort: true,edit: 'text'},
+                {field: 'name', title: '名称',  sort: true,edit: 'text'},
                 {field: 'price', title: '价格（￥）', sort: true, edit: 'text'},
-                {field: 'qty', title: '数量', width: 80, edit: 'text'},
+                {field: 'qty', title: '数量', edit: 'text'},
                 {field: 'unit', title: '单位', edit: 'text', totalRow: '<b>总计:</b>'},
                 {field: 'total', title: '总价（￥）',  sort: true, edit: 'text',totalRow: '<b id="subtotal">{{= parseInt(d.TOTAL_NUMS) }}</b>'},
-                {fixed: 'right', title:'操作', width: 134, minWidth: 125, templet: '#toolOpt'}
+                {fixed: 'right', title:'操作',  templet: '#toolOpt'}
             ]],
             data: dataList,
             css: [
