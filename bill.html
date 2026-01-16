@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>对账表</title>
 
     <!-- layui CSS -->
@@ -10,7 +11,7 @@
 <body>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/layui@2.9.7/dist/layui.js"></script>
-<div style="width: 800px;margin: auto;">
+<div style="max-width:100%; width:95%; margin:auto; overflow-x:auto;">
     <style>
         .delBtn{text-align: center;}
         .delBtn i{font-size: 24px;color:#ff0000;}
@@ -111,12 +112,9 @@
             var value = obj.value;
             var data  = obj.data;
 
-            // 只限制这三个字段
+            // 数字校验（price, qty, total）
             if(['price','qty','total'].includes(field)){
-
-                // 允许：整数 / 小数（最多一个 .）
-                var numReg = /^\d+(\.\d{0,3})?$/;
-
+                var numReg = /^\d+(\.\d{0,2})?$/; // 允许 2 位小数
                 if(value !== '' && !numReg.test(value)){
                     layer.tips('只能输入数字', obj.tr.find('td[data-field="'+field+'"]'), {
                         tips: 1
@@ -125,7 +123,7 @@
                 }
             }
 
-            // 价格或数量变动 → 自动算 total
+            // 如果改的是 price 或 qty，自动更新当前行 total
             if(field === 'price' || field === 'qty'){
                 var price = parseFloat(data.price) || 0;
                 var qty   = parseFloat(data.qty) || 0;
@@ -133,9 +131,17 @@
                 obj.update({
                     total: (price * qty).toFixed(2)
                 });
-
-                calcSubtotal();
             }
+
+            // 如果改 total，直接保证它是数字即可
+            if(field === 'total'){
+                obj.update({
+                    total: parseFloat(value || 0).toFixed(2)
+                });
+            }
+
+            // 重新计算 subtotal
+            calcSubtotal();
         });
 
         // 行工具事件（删除）
