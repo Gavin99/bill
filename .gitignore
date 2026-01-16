@@ -1,0 +1,12 @@
+.env
+.idea
+.vscode
+*.log
+/vendor
+/runtime
+/safefile
+/nbproject
+/composer.lock
+/public/uploads
+docs/template
+/config/database.php

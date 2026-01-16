@@ -11,10 +11,33 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/layui@2.9.7/dist/layui.js"></script>
 <div style="width: 800px;margin: auto;">
-    <table class="layui-hide" id="bill-data"></table>
+    <style>
+        .delBtn{text-align: center;}
+        .delBtn i{font-size: 24px;color:#ff0000;}
+    </style>
     <script type="text/html" id="toolbarBox">
         <h2 style="text-align: center;color: #1e9fff;padding: 3px;">对账表</h2>
     </script>
+    <table class="layui-hide" id="bill-data"></table>
+
+    <script type="text/html" id="toolOpt">
+        <div class="layui-clear-space">
+        <span class="delBtn" lay-event="del">
+            <i class="layui-icon layui-icon-reduce-circle" title="删除"></i>
+        </span>
+        </div>
+    </script>
+
+    <div class="layui-btn-container btnBox" style="margin-top: 15px;">
+        <button type="button" id="addBtn" class="layui-btn layui-btn-sm">
+            <i class="layui-icon layui-icon-add-1"></i>
+        </button>&nbsp;
+        <button type="button" id="refreshBtn" class="layui-btn layui-btn-sm layui-btn-primary">
+            <i class="layui-icon layui-icon-refresh-3"></i>
+        </button>
+    </div>
+
+
 </div>
 <script>
     var dataList = [ // 赋值已知数据
@@ -41,14 +64,15 @@
         {"id": "21", "name": "姜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
         {"id": "22", "name": "青椒", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
         {"id": "23", "name": "小尖椒", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "24", "name": "白酒", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
-        {"id": "25", "name": "啤酒", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
-        {"id": "26", "name": "橙汁", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
-        {"id": "27", "name": "椰汁", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
-        {"id": "28", "name": "可乐", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
-        {"id": "29", "name": "雪碧", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
-        {"id": "30", "name": "碗", "price": "0", "qty": "1", "unit": "打/箱", "total": "0"},
-        {"id": "31", "name": "筷子", "price": "0", "qty": "1", "unit": "包/捆", "total": "0"},
+        {"id": "24", "name": "香烟", "price": "0", "qty": "1", "unit": "条", "total": "0"},
+        {"id": "25", "name": "白酒", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
+        {"id": "26", "name": "啤酒", "price": "0", "qty": "1", "unit": "件/箱", "total": "0"},
+        {"id": "27", "name": "橙汁", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
+        {"id": "28", "name": "椰汁", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
+        {"id": "29", "name": "可乐", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
+        {"id": "30", "name": "雪碧", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
+        {"id": "31", "name": "碗", "price": "0", "qty": "1", "unit": "打/箱", "total": "0"},
+        {"id": "32", "name": "筷子", "price": "0", "qty": "1", "unit": "包/捆", "total": "0"},
     ];
     layui.use('table', function(){
         var table = layui.table;
@@ -58,12 +82,15 @@
         var inst = table.render({
             elem: '#bill-data',
             cols: [[ //标题栏
-                {field: 'id', title: '序号', width: 80, sort: true},
-                {field: 'name', title: '名称', width: 120, sort: true},
-                {field: 'price', title: '价格', sort: true, edit: 'text'},
+                {field: 'id', title: '序号', width: 80,templet: function(d){
+                        return d.LAY_INDEX + 1;
+                    }},
+                {field: 'name', title: '名称', width: 120, sort: true,edit: 'text'},
+                {field: 'price', title: '价格（￥）', sort: true, edit: 'text'},
                 {field: 'qty', title: '数量', width: 80, edit: 'text'},
                 {field: 'unit', title: '单位', edit: 'text', totalRow: '<b>总计:</b>'},
-                {field: 'total', title: '总价',  sort: true, edit: 'text',totalRow: '<b id="subtotal">{{= parseInt(d.TOTAL_NUMS) }}</b>'}
+                {field: 'total', title: '总价（￥）',  sort: true, edit: 'text',totalRow: '<b id="subtotal">{{= parseInt(d.TOTAL_NUMS) }}</b>'},
+                {fixed: 'right', title:'操作', width: 134, minWidth: 125, templet: '#toolOpt'}
             ]],
             data: dataList,
             css: [
@@ -73,7 +100,7 @@
             toolbar: '#toolbarBox',
             defaultToolbar: true,
             "totalRow": true,
-            page: true, // 是否显示分页
+            page: false, // 是否显示分页
             limits: [20, 50, 60,80,100],
             limit: 50 // 每页默认显示的数量
         });
@@ -84,38 +111,91 @@
             var value = obj.value;
             var data  = obj.data;
 
-            if(field === 'total' || field === 'unit'){
-                return;
+            // 只限制这三个字段
+            if(['price','qty','total'].includes(field)){
+
+                // 允许：整数 / 小数（最多一个 .）
+                var numReg = /^\d+(\.\d{0,3})?$/;
+
+                if(value !== '' && !numReg.test(value)){
+                    layer.tips('只能输入数字', obj.tr.find('td[data-field="'+field+'"]'), {
+                        tips: 1
+                    });
+                    return obj.reedit(); // 回到编辑状态
+                }
             }
 
-            if(value.replace(/\s/g, '') === ''){
-                layer.tips('值不能为空', this, {tips: 1});
-                return obj.reedit();
+            // 价格或数量变动 → 自动算 total
+            if(field === 'price' || field === 'qty'){
+                var price = parseFloat(data.price) || 0;
+                var qty   = parseFloat(data.qty) || 0;
+
+                obj.update({
+                    total: (price * qty).toFixed(2)
+                });
+
+                calcSubtotal();
             }
+        });
 
-            var price = parseFloat(data.price) || 0;
-            var qty   = parseFloat(data.qty) || 0;
+        // 行工具事件（删除）
+        table.on('tool(bill-data)', function(obj){
+            if(obj.event === 'del'){
+                var tableData = table.cache['bill-data'] || [];
 
-            // 1️⃣ 计算当前行 total
-            var total = (price * qty).toFixed(2);
+                // 1️⃣ 删除当前行（用 index，不用 obj.del）
+                tableData.splice(obj.tr.data('index'), 1);
 
-            // 2️⃣ 更新当前行（关键修复点）
-            obj.update({
-                total: total
+                // 2️⃣ 重新生成 id（从 1 开始）
+                tableData.forEach(function(row, i){
+                    row.id = i + 1;
+                });
+
+                // 3️⃣ 重新渲染表格
+                inst.reload({
+                    data: tableData
+                });
+
+                // 4️⃣ 重新计算总计
+                calcSubtotal();
+
+                layer.close(index);
+
+            }
+        });
+
+        $('#addBtn').on('click', function(){
+            var tableData = table.cache['bill-data'] || [];
+
+            tableData.push({
+               // id: tableData.length + 1,
+                name: '自定义名称',
+                price: '0',
+                qty: '1',
+                unit: '斤/箱',
+                total: '0'
             });
 
-            // 3️⃣ 重新计算 subtotal
-            var tableData = table.cache['bill-data'];
+            inst.reload({
+                data: tableData
+            });
+        });
+
+        $('#refreshBtn').on('click', function(){
+            location.reload();
+        });
+
+        function calcSubtotal(){
+            var tableData = table.cache['bill-data'] || [];
             var subtotal = 0;
 
             tableData.forEach(function(row){
                 subtotal += parseFloat(row.total) || 0;
             });
 
-            // 4️⃣ 更新底部合计
             $('.layui-table-total td[data-field="total"] .layui-table-cell')
                 .html('<b>' + subtotal.toFixed(2) + '</b>');
-        });
+        }
     });
 </script>
 
