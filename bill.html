@@ -83,14 +83,14 @@
         var inst = table.render({
             elem: '#bill-data',
             cols: [[ //标题栏
-                {field: 'id', title: '序号', templet: function(d){
+                {field: 'id', title: '序号',hide:true, templet: function(d){
                         return d.LAY_INDEX + 1;
                     }},
                 {field: 'name', title: '名称',edit: 'text'},
                 {field: 'price', title: '价格', edit: 'text'},
                 {field: 'qty', title: '数量', edit: 'text'},
-                {field: 'unit', title: '单位', edit: 'text', totalRow: '<b>总计:</b>'},
-                {field: 'total', title: '总价(￥)',  sort: true, edit: 'text',totalRow: '<b id="subtotal">{{= parseInt(d.TOTAL_NUMS) }}</b>'},
+                {field: 'unit', title: '单位', edit: 'text'},
+                {field: 'total', title: '总价',  edit: 'text',sort: true},
                 {fixed: 'right', title:'操作',  templet: '#toolOpt'}
             ]],
             data: dataList,
@@ -99,12 +99,43 @@
                 '.layui-table-view td[data-edit]{color: #223a75;}'
             ].join(''),
             toolbar: '#toolbarBox',
-            defaultToolbar: true,
-            "totalRow": true,
             page: false, // 是否显示分页
             limits: [20, 50, 60,80,100],
-            limit: 50 // 每页默认显示的数量
+            limit: 50,
+            // ⭐ 关键：渲染完成后合并 totalRow
+            done: function () {
+                renderCustomTotalRow();
+            }
         });
+
+        function renderCustomTotalRow(){
+            // 先删除旧的
+            $('.custom-total-row').remove();
+
+            var tableData = table.cache['bill-data'] || [];
+            var subtotal = 0;
+
+            tableData.forEach(function(row){
+                subtotal += parseFloat(row.total) || 0;
+            });
+
+            var colspan = 4; // name + price + qty + unit
+
+            var html = `
+        <tr class="custom-total-row" style="height: 45px;">
+            <td colspan="${colspan}" style="text-align:right;font-weight:bold;">
+                合计：
+            </td>
+            <td style="font-weight:bold;color:#ff5722;text-indent: 15px;">
+                ${subtotal.toFixed(2)}
+            </td>
+            <td></td>
+        </tr>
+    `;
+
+            $('.layui-table-main tbody').append(html);
+        }
+
 
         table.on('edit(bill-data)', function(obj){
             var field = obj.field;
@@ -190,16 +221,14 @@
             location.reload();
         });
 
-        function calcSubtotal(){
-            var tableData = table.cache['bill-data'] || [];
-            var subtotal = 0;
-
-            tableData.forEach(function(row){
-                subtotal += parseFloat(row.total) || 0;
+        function refreshTable(){
+            inst.reload({
+                data: table.cache['bill-data']
             });
+        }
 
-            $('.layui-table-total td[data-field="total"] .layui-table-cell')
-                .html('<b>' + subtotal.toFixed(2) + '</b>');
+        function calcSubtotal(){
+            renderCustomTotalRow();
         }
     });
 </script>
