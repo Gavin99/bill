@@ -111,14 +111,14 @@
                 subtotal += parseFloat(row.total) || 0;
             });
 
-            var colspan = 4; // name + price + qty + unit
+            var colspan = 2; // name + price + qty + unit
 
             var html = `
         <tr class="custom-total-row" style="height: 45px;">
             <td colspan="${colspan}" style="text-align:right;font-weight:bold;">
-                合计：
+                <b style="color: #000">合计费用：</b>
             </td>
-            <td style="font-weight:bold;color:#ff5722;text-indent: 15px;">
+            <td colspan="5" style="font-weight:bold;color:#ff5722;text-indent: 15px;">
                 ${subtotal.toFixed(2)}
             </td>
 
