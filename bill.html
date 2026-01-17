@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>对账表</title>
+    <title>费用明细对账表</title>
 
     <!-- layui CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/layui@2.9.7/dist/css/layui.css">
@@ -17,7 +17,7 @@
         .delBtn i{font-size: 24px;color:#ff0000;}
     </style>
     <script type="text/html" id="toolbarBox">
-        <h2 style="text-align: center;color: #1e9fff;padding: 3px;">对账表</h2>
+        <h2 style="text-align: center;color: #1e9fff;padding: 3px;">费用明细对账表</h2>
     </script>
     <table class="layui-hide" id="bill-data"></table>
 
@@ -45,35 +45,27 @@
         {"id": "1", "name": "米", "price": "0", "qty": "1", "unit": "包", "total": "0"},
         {"id": "2", "name": "油", "price": "0", "qty": "1", "unit": "瓶", "total": "0"},
         {"id": "3", "name": "盐", "price": "0", "qty": "1", "unit": "包", "total": "0"},
-        {"id": "4", "name": "生抽", "price": "0", "qty": "1", "unit": "瓶", "total": "0"},
-        {"id": "5", "name": "老抽", "price": "0", "qty": "1", "unit": "瓶", "total": "0"},
-        {"id": "6", "name": "醋", "price": "0", "qty": "1", "unit": "瓶", "total": "0"},
-        {"id": "7", "name": "茶", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "8", "name": "鸡", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "9", "name": "鸭", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "10", "name": "鹅", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "11", "name": "鱼", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "12", "name": "猪肉", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "13", "name": "豆腐", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "14", "name": "香芋", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "15", "name": "白菜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "16", "name": "酸菜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "17", "name": "包菜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "18", "name": "香菜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "19", "name": "葱", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "20", "name": "蒜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "21", "name": "姜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "22", "name": "青椒", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "23", "name": "小尖椒", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
-        {"id": "24", "name": "香烟", "price": "0", "qty": "1", "unit": "条", "total": "0"},
-        {"id": "25", "name": "白酒", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
-        {"id": "26", "name": "啤酒", "price": "0", "qty": "1", "unit": "件", "total": "0"},
-        {"id": "27", "name": "橙汁", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
-        {"id": "28", "name": "椰汁", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
-        {"id": "29", "name": "可乐", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
-        {"id": "30", "name": "雪碧", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
-        {"id": "31", "name": "碗", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
-        {"id": "32", "name": "筷子", "price": "0", "qty": "1", "unit": "包", "total": "0"},
+        {"id": "4", "name": "酱油", "price": "0", "qty": "1", "unit": "瓶", "total": "0"},
+        {"id": "5", "name": "鸡", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "6", "name": "鱼", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "7", "name": "猪肉", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "8", "name": "豆腐", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "9", "name": "香芋", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "10", "name": "白菜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "11", "name": "酸菜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "12", "name": "香菜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "13", "name": "葱", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "14", "name": "蒜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "15", "name": "姜", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "16", "name": "辣椒", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "17", "name": "香烟", "price": "0", "qty": "1", "unit": "条", "total": "0"},
+        {"id": "18", "name": "茶叶", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
+        {"id": "19", "name": "白酒", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
+        {"id": "20", "name": "啤酒", "price": "0", "qty": "1", "unit": "件", "total": "0"},
+        {"id": "21", "name": "橙汁", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
+        {"id": "22", "name": "可乐", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
+        {"id": "23", "name": "雪碧", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
+        {"id": "24", "name": "碗筷", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
     ];
     layui.use('table', function(){
         var table = layui.table;
@@ -129,7 +121,7 @@
             <td style="font-weight:bold;color:#ff5722;text-indent: 15px;">
                 ${subtotal.toFixed(2)}
             </td>
-            <td></td>
+
         </tr>
     `;
 
