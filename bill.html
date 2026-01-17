@@ -67,13 +67,13 @@
         {"id": "23", "name": "小尖椒", "price": "0", "qty": "1", "unit": "斤", "total": "0"},
         {"id": "24", "name": "香烟", "price": "0", "qty": "1", "unit": "条", "total": "0"},
         {"id": "25", "name": "白酒", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
-        {"id": "26", "name": "啤酒", "price": "0", "qty": "1", "unit": "件/箱", "total": "0"},
-        {"id": "27", "name": "橙汁", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
-        {"id": "28", "name": "椰汁", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
-        {"id": "29", "name": "可乐", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
-        {"id": "30", "name": "雪碧", "price": "0", "qty": "1", "unit": "箱/瓶", "total": "0"},
-        {"id": "31", "name": "碗", "price": "0", "qty": "1", "unit": "打/箱", "total": "0"},
-        {"id": "32", "name": "筷子", "price": "0", "qty": "1", "unit": "包/捆", "total": "0"},
+        {"id": "26", "name": "啤酒", "price": "0", "qty": "1", "unit": "件", "total": "0"},
+        {"id": "27", "name": "橙汁", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
+        {"id": "28", "name": "椰汁", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
+        {"id": "29", "name": "可乐", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
+        {"id": "30", "name": "雪碧", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
+        {"id": "31", "name": "碗", "price": "0", "qty": "1", "unit": "箱", "total": "0"},
+        {"id": "32", "name": "筷子", "price": "0", "qty": "1", "unit": "包", "total": "0"},
     ];
     layui.use('table', function(){
         var table = layui.table;
@@ -86,11 +86,11 @@
                 {field: 'id', title: '序号', templet: function(d){
                         return d.LAY_INDEX + 1;
                     }},
-                {field: 'name', title: '名称',  sort: true,edit: 'text'},
-                {field: 'price', title: '价格（￥）', sort: true, edit: 'text'},
+                {field: 'name', title: '名称',edit: 'text'},
+                {field: 'price', title: '价格', edit: 'text'},
                 {field: 'qty', title: '数量', edit: 'text'},
                 {field: 'unit', title: '单位', edit: 'text', totalRow: '<b>总计:</b>'},
-                {field: 'total', title: '总价（￥）',  sort: true, edit: 'text',totalRow: '<b id="subtotal">{{= parseInt(d.TOTAL_NUMS) }}</b>'},
+                {field: 'total', title: '总价(￥)',  sort: true, edit: 'text',totalRow: '<b id="subtotal">{{= parseInt(d.TOTAL_NUMS) }}</b>'},
                 {fixed: 'right', title:'操作',  templet: '#toolOpt'}
             ]],
             data: dataList,
